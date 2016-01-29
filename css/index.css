@@ -1,0 +1,50 @@
+html body{
+    /*background-image: url("../images/oldPaper.png");*/
+    /*background-size: 100% 100%;*/
+    /*background-repeat: no-repeat;*/
+    background-color: gainsboro;
+    text-align: justify;
+}
+
+main {
+
+    background-color: gainsboro;
+    margin: 2em;
+}
+aside {
+    /*background-color: white;*/
+    padding: 2em;
+}
+section {
+    background-color: white;
+    padding: 2em;
+}
+footer {
+    background-color: white;
+    margin: 0;
+}
+footer a {
+    display: block;
+    padding: 2em;
+}
+p {
+    margin: 1em 0;
+}
+.navbar-default {
+    background-color: white !important;
+    border-color: white;
+}
+a {
+    border: none !important;
+}
+.panel-footer {
+    background-color: white !important;
+}
+/*.row{*/
+    /*overflow: hidden;*/
+/*}*/
+
+/*[class*="col-"]{*/
+    /*margin-bottom: -99999px;*/
+    /*padding-bottom: 99999px;*/
+/*}*/
