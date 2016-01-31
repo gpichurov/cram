@@ -34,7 +34,7 @@ p {
     background-color: white !important;
     border-color: white;
 }
-a {
+.list-group a {
     border: none !important;
 }
 .panel-footer {
