@@ -13,7 +13,7 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="index.html">
+            <a href="index.php">
                 <img class="img-responsive" src="images/theLogo.png" alt="">
             </a>
         </div>
@@ -28,8 +28,8 @@
                     </div>
                 </form>
             </li>
-            <li><a href="signUp.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a href="signUp.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         </ul>
 
     </div>
@@ -66,20 +66,20 @@
                 </div>
             </div>
             <div class="form-group">
-                <p class="text-center"><a href="forgot.html">Forgot your username or password?</a></p>
+                <p class="text-center"><a href="forgot.php">Forgot your username or password?</a></p>
             </div>
         </form>
     </div>
     <div class="panel-footer">
-        <h5 class="text-center">Don't have an account? <a href="signUp.html">Sign up</a> </h5>
+        <h5 class="text-center">Don't have an account? <a href="signUp.php">Sign up</a> </h5>
     </div>
 </main>
 <footer class="container-fluid text-center">
     <div class="row">
-        <div class="col-sm-2 col-sm-offset-2"><a href="about.html">About</a></div>
-        <div class="col-sm-2"><a href="faq.html">FAQ</a></div>
-        <div class="col-sm-2"><a href="siteMap.html">Site Map</a></div>
-        <div class="col-sm-2"><a href="support.html">Support</a></div>
+        <div class="col-sm-2 col-sm-offset-2"><a href="about.php">About</a></div>
+        <div class="col-sm-2"><a href="FAQ.php">FAQ</a></div>
+        <div class="col-sm-2"><a href="siteMap.php">Site Map</a></div>
+        <div class="col-sm-2"><a href="support.php">Support</a></div>
     </div>
 </footer>
 </body>

@@ -1,3 +1,17 @@
+<?php
+require_once 'php/autoload.php';
+
+$dsn = 'mysql:host=localhost;dbname=Cram';
+$user = 'root';
+$pass = 'root';
+
+$pdo = new PDO($dsn, $user, $pass, [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+]);
+
+//var_dump($_POST);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +27,7 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="index.html">
+            <a href="index.php">
                 <img class="img-responsive" src="images/theLogo.png" alt="">
             </a>
         </div>
@@ -32,15 +46,14 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false">$username <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="settings.html">Settings</a></li>
-                    <li><a href="createFlashcard.html">Create Flashcards</a></li>
+                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="settings.php">Settings</a></li>
+                    <li><a href="createFlashcard.php">Create Flashcards</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Log Out</a></li>
                 </ul>
             </li>
         </ul>
-
     </div>
 </nav>
 
@@ -50,32 +63,32 @@
     </div>
     <div class="panel-body">
         <div class="panel">
-            <form class="form-horizontal" role="form">
+            <form class="form-horizontal" role="form" method="post">
                 <div class="page-header text-center">
                     <h4>Description</h4>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="setTitle">Set Title:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="setTitle" placeholder="Enter title">
+                        <input type="text" class="form-control" id="setTitle" placeholder="Enter title" name="title">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="subjects">Subjects (Optional, comma separated):</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="subjects" placeholder="Enter subjects">
+                        <input type="text" class="form-control" id="subjects" placeholder="Enter subjects" name="subjects">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="description">Description (Optional):</label>
                     <div class="col-sm-10">
-                        <textarea name="" class="form-control" id="description" rows="5"></textarea>
+                        <textarea name="description" class="form-control" id="description" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="access">Access:</label>
                     <div class="col-sm-2">
-                        <select name="" id="access" class="form-control">
+                        <select name="access" id="access" class="form-control">
                             <option value="public">Public</option>
                             <option value="private">Private</option>
                         </select>
@@ -97,24 +110,10 @@
                         <p class="text-right">1</p>
                     </div>
                     <div class="col-sm-5">
-                        <textarea name="" class="form-control" rows="5"></textarea>
+                        <textarea name="front" class="form-control" rows="5"></textarea>
                     </div>
                     <div class="col-sm-5">
-                        <textarea name="" class="form-control"  rows="5"></textarea>
-                    </div>
-                    <div class="col-sm-1">
-                        <button class="glyphicon glyphicon-trash"></button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-1">
-                        <p class="text-right">2</p>
-                    </div>
-                    <div class="col-sm-5">
-                        <textarea name="" class="form-control" rows="5"></textarea>
-                    </div>
-                    <div class="col-sm-5">
-                        <textarea name="" class="form-control"  rows="5"></textarea>
+                        <textarea name="back" class="form-control"  rows="5"></textarea>
                     </div>
                     <div class="col-sm-1">
                         <button class="glyphicon glyphicon-trash"></button>
@@ -136,10 +135,10 @@
 </main>
 <footer class="container-fluid text-center">
     <div class="row">
-        <div class="col-sm-2 col-sm-offset-2"><a href="about.html">About</a></div>
-        <div class="col-sm-2"><a href="faq.html">FAQ</a></div>
-        <div class="col-sm-2"><a href="siteMap.html">Site Map</a></div>
-        <div class="col-sm-2"><a href="support.html">Support</a></div>
+        <div class="col-sm-2 col-sm-offset-2"><a href="about.php">About</a></div>
+        <div class="col-sm-2"><a href="FAQ.php">FAQ</a></div>
+        <div class="col-sm-2"><a href="siteMap.php">Site Map</a></div>
+        <div class="col-sm-2"><a href="support.php">Support</a></div>
     </div>
 </footer>
 </body>

@@ -13,7 +13,7 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="index.html">
+            <a href="index.php">
                 <img class="img-responsive" src="images/theLogo.png" alt="">
             </a>
         </div>
@@ -32,9 +32,9 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false">$username <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="settings.html">Settings</a></li>
-                    <li><a href="createFlashcard.html">Create Flashcards</a></li>
+                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="settings.php">Settings</a></li>
+                    <li><a href="createFlashcard.php">Create Flashcards</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Log Out</a></li>
                 </ul>
@@ -150,10 +150,10 @@
 </main>
 <footer class="container-fluid text-center">
     <div class="row">
-        <div class="col-sm-2 col-sm-offset-2"><a href="about.html">About</a></div>
-        <div class="col-sm-2"><a href="faq.html">FAQ</a></div>
-        <div class="col-sm-2"><a href="siteMap.html">Site Map</a></div>
-        <div class="col-sm-2"><a href="support.html">Support</a></div>
+        <div class="col-sm-2 col-sm-offset-2"><a href="about.php">About</a></div>
+        <div class="col-sm-2"><a href="FAQ.php">FAQ</a></div>
+        <div class="col-sm-2"><a href="siteMap.php">Site Map</a></div>
+        <div class="col-sm-2"><a href="support.php">Support</a></div>
     </div>
 </footer>
 </body>
