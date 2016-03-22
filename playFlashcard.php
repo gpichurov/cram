@@ -2,11 +2,14 @@
 require_once 'php/autoload.php';
 require_once 'php/functions.php';
 session_start();
+
 if (!$_SESSION['username']) {
     header('Location: login.php');
     die;
 }
-$data = DbStorage::selectCards();
+
+$cnt = 0;
+$data = DbStorage::showCards();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +17,7 @@ $data = DbStorage::selectCards();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>cram</title>
-    <!--<link rel="stylesheet" href="css/reset.css">-->
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.min.css">
 </head>
@@ -38,7 +41,7 @@ $data = DbStorage::selectCards();
                     </div>
                 </form>
             </li>
-            <?php if ($_SESSION['username']): ?>
+            <?php if ($_SESSION): ?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><?= $_SESSION['username']?> <span class="caret"></span></a>
@@ -54,55 +57,61 @@ $data = DbStorage::selectCards();
                 <li><a href="signUp.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             <?php endif; ?>
+
         </ul>
     </div>
 </nav>
 
 <main class="container-fluid panel">
     <div class="page-header text-center">
-        <h3>Welcome <?= $_SESSION['username']?></h3>
+        <h3>Play Flashcards Set</h3>
     </div>
-    <div class="panel-body">
+    <div class="">
         <div class="panel">
-            <div class="panel-body">
-                <div>
-
-                    <div class="tab-content"  style="min-height: 400px;">
-                        <div role="tabpanel" class="tab-pane active" id="created">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th class="col-sm-2">Set ID</th>
-                                        <th class="col-sm-8">Set Title</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php foreach($data as $key=>$value): ?>
-                                            <tr>
-                                                <td class="col-sm-2">
-                                                    <a href="playFlashcard.php?id=<?=$value['id'] ?>"><?=$value['id'] ?></a>
-                                                </td>
-                                                <td class="col-sm-7">
-                                                    <a href="playFlashcard.php?id=<?=$value['id'] ?>"><?=$value['name'] ?></a>
-                                                </td>
-                                                <td class="col-sm-1">
-                                                    <div class="btn-group " role="group" aria-label="...">
-                                                        <a href="deleteFlashcards.php?id=<?=$value['id'] ?>" onclick="return confirm('Are you sure?')" type="button" class="btn btn-default glyphicon glyphicon-trash"></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                    <?php endforeach; ?>
-                                    </tbody>
-                                </table>
+                <div class="panel-heading">
+                    <div class="col-sm-6 col-sm-offset-1">
+                        <h5>FRONT</h5>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>BACK</h5>
+                    </div>
+                </div>
+            <br>
+            <br>
+                <div id="q" class="panel-body">
+<!--                    <div class="col-sm-4 col-sm-offset-1">-->
+<!--                        <div class="panel panel-warning"  style="min-height: 100px">-->
+<!--                            <p style="padding: 1em"></p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-sm-2">-->
+<!--                        <button class="btn alert-success" onclick="show(1)">See the answer</button>-->
+<!--                    </div>-->
+<!--                    <div class="col-sm-4">-->
+<!--                        <div class="panel panel-warning" id="1" style="min-height: 100px; display: none">-->
+<!--                            <p style="padding: 1em"></p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <?php foreach($data as $key=>$value): ?>
+                        <?php $cnt++;?>
+                        <div class="col-sm-4 col-sm-offset-1">
+                            <div class="panel panel-warning"  style="min-height: 100px">
+                                <p style="padding: 1em"><?=$value['question'] ?></p>
                             </div>
                         </div>
-                    </div>
-
+                        <div class="col-sm-2">
+                            <button class="btn alert-success" onclick="show(<?=$cnt?>)">See the answer</button>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="panel panel-warning"  style="min-height: 100px;">
+                                <p id="<?=$cnt?>" style="padding: 1em;  visibility: hidden;"><?=$value['answer'] ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-            </div>
-        </div>
 
+
+        </div>
     </div>
 </main>
 <footer class="container-fluid text-center">
@@ -116,4 +125,9 @@ $data = DbStorage::selectCards();
 </body>
 <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
 <script type="text/javascript" src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+<script>
+    function show(id){
+        $('#' + id).css('visibility', 'visible');
+    }
+</script>
 </html>

@@ -1,3 +1,39 @@
+<?php
+ini_set('display_errors', 'On');
+ini_set('error_reporting', E_ALL);
+require_once 'php/autoload.php';
+require_once 'php/functions.php';
+
+
+$data = [];
+$errors = [];
+
+if ($_POST) {
+    $data = $_POST;
+    $user = new Users($data['userName'], $data['pwd']);
+    //var_dump($data['pwd'], $data['pwdRep']);
+
+    if (!getValue($data, 'userName')) {
+        $errors[] = 'Username is required';
+    }
+
+    if (!getValue($data, 'pwd')) {
+        $errors[] = 'Password is required';
+    }
+
+    if (!$user->checkLogin()){
+        $errors[] = 'Wrong username';
+    }
+
+    if (!$errors) {
+        session_start();
+        $_SESSION = $user->checkLogin()[0];
+        header('Location: createFlashcard.php');
+        die;
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,17 +76,22 @@
         <h3>Login to your account</h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form" method="post">
+            <?php if ($errors):?>
+                <div class="alert alert-danger">
+                    <?= implode('<br>', $errors)?>
+                </div>
+            <?php endif;?>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="pwd">Username:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="userName" placeholder="Enter username">
+                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Enter username">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="pwd">Password:</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Enter password">
                 </div>
             </div>
             <div class="form-group">

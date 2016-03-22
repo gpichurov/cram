@@ -22,4 +22,5 @@ interface IDBStorable
     public function setFieldsFromDb($fieldValues);
 
     public function setPrimaryKeyValue($value);
+
 }

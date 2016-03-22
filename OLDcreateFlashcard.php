@@ -2,46 +2,8 @@
 require_once 'php/autoload.php';
 require_once 'php/functions.php';
 session_start();
-
-$data = [];
-$errors = [];
-
-if (!$_SESSION['username']) {
-    header('Location: login.php');
-    die;
-}
-
-if ($_POST) {
-    $data = $_POST;
-    $card = new FlashCards($data['title'], $data['description'], $_SESSION['id']);
-
-
-    if (!getValue($data, 'title')) {
-        $errors[] = 'Title is required';
-    }
-
-    if (count($data) < 3) {
-        $errors[] = 'At last one question is required';
-    }
-
-    function questionsAdd($data, $card){
-        array_shift($data);
-        array_shift($data);
-        $data = array_values($data);
-        for ($i = 0; $i < count($data); $i += 2) {
-            $question = new Questions($data[$i], $data[$i + 1], DbStorage::checkID($card));
-            DbStorage::insertObject($question);
-        }
-    }
-    if (!$errors) {
-        DbStorage::insertObject($card);
-        questionsAdd($data, $card);
-        //header('Location: profile.php');
-        //die;
-    }
-
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +34,7 @@ if ($_POST) {
                     </div>
                 </form>
             </li>
-            <?php if ($_SESSION): ?>
+            <?php if ($_SESSION['username']): ?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><?= $_SESSION['username']?> <span class="caret"></span></a>
@@ -100,11 +62,9 @@ if ($_POST) {
     <div class="panel-body">
         <div class="panel">
             <form class="form-horizontal" role="form" method="post">
-                <?php if ($errors):?>
-                    <div class="alert alert-danger">
-                        <?= implode('<br>', $errors)?>
-                    </div>
-                <?php endif;?>
+                <div class="page-header text-center">
+                    <h4>Description</h4>
+                </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="setTitle">Set Title:</label>
                     <div class="col-sm-10">
@@ -112,9 +72,24 @@ if ($_POST) {
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-sm-2" for="subjects">Subjects (Optional, comma separated):</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="subjects" placeholder="Enter subjects" name="subjects">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-sm-2" for="description">Description (Optional):</label>
                     <div class="col-sm-10">
                         <textarea name="description" class="form-control" id="description" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="access">Access:</label>
+                    <div class="col-sm-2">
+                        <select name="access" id="access" class="form-control">
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
                     </div>
                 </div>
                 <div class="page-header text-center">
@@ -128,25 +103,23 @@ if ($_POST) {
                         <h5>BACK</h5>
                     </div>
                 </div>
-                <div id="q">
-                    <div class="form-group" id="1">
-                        <div class="col-sm-1">
-                            <p class="text-right">#</p>
-                        </div>
-                        <div class="col-sm-5">
-                            <textarea name="front" class="form-control" rows="5"></textarea>
-                        </div>
-                        <div class="col-sm-5">
-                            <textarea name="back" class="form-control"  rows="5"></textarea>
-                        </div>
-                        <div class="col-sm-1">
-                            <button class="glyphicon glyphicon-trash" onclick="removee(1)"></button>
-                        </div>
+                <div class="form-group">
+                    <div class="col-sm-1">
+                        <p class="text-right">1</p>
+                    </div>
+                    <div class="col-sm-5">
+                        <textarea name="front" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="col-sm-5">
+                        <textarea name="back" class="form-control"  rows="5"></textarea>
+                    </div>
+                    <div class="col-sm-1">
+                        <button class="glyphicon glyphicon-trash"></button>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-10">
-                        <button type="button" class="btn btn-info form-control" onclick="addRow()">ADD NEW CARD</button>
+                        <button type="button" class="btn btn-info form-control">ADD NEW CARD</button>
                     </div>
                 </div>
                 <div class="form-group panel-footer">
@@ -169,21 +142,4 @@ if ($_POST) {
 </body>
 <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
 <script type="text/javascript" src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
-<script>
-    var n = 2;
-    var cnt;
-    function addRow(){
-        cnt = n;
-        n++;
-        $('#q').append(
-            '<div class="form-group" id="' + cnt + '"><div class="col-sm-1"><p class="text-right">#</p></div>' +
-            '<div class="col-sm-5"><textarea name="front' + cnt + '" class="form-control" rows="5"></textarea></div>' +
-            '<div class="col-sm-5"><textarea name="back' + cnt + '" class="form-control"  rows="5"></textarea></div>' +
-            '<div class="col-sm-1"><button class="glyphicon glyphicon-trash" onclick="removee(' + cnt + ')"></button></div></div>'
-        );
-    }
-    function removee(id){
-        $('#' + id).remove();
-    }
-</script>
 </html>

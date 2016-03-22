@@ -1,3 +1,49 @@
+<?php
+
+require_once 'php/autoload.php';
+require_once 'php/functions.php';
+
+$data = [];
+$errors = [];
+
+if ($_POST) {
+    $data = $_POST;
+    $user = new Users($data['userName'], $data['pwd'], $data['email']);
+    //var_dump($data['pwd'], $data['pwdRep']);
+    if (!getValue($data, 'userName') || mb_strlen(getValue($data, 'userName'), 'UTF-8') < 5) {
+        $errors[] = 'Username at last 5 characters is required';
+    }
+
+    if (!getValue($data, 'email')) {
+        $errors[] = 'Email is required';
+    }
+
+    if (!getValue($data, 'pwd') || mb_strlen(getValue($data, 'pwd'), 'UTF-8') < 5) {
+        $errors[] = 'Password at last 5 characters is required';
+    }
+
+    if (($data['pwd'] !== $data['pwdRep'])) {
+        $errors[] = 'Password must match';
+    }
+
+    if (DbStorage::checkUsername($user)){
+        $errors[] = 'Username exist';
+    }
+
+    if (DbStorage::checkEmail($user)){
+        $errors[] = 'Email exist';
+    }
+
+
+    if (!$errors) {
+        DbStorage::insertObject($user);
+        header('Location: login.php');
+        die;
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +69,8 @@
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search for...">
                         <span class="input-group-btn">
-                            <button class="btn btn-default"  type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            <button class="btn btn-default"  type="button">
+                                <span class="glyphicon glyphicon-search"></span></button>
                         </span>
                     </div>
                 </form>
@@ -40,29 +87,36 @@
         <h3>Sign up for your FREE account</h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form" method="post">
+            <?php if ($errors):?>
+                <div class="alert alert-danger">
+                    <?= implode('<br>', $errors)?>
+                </div>
+            <?php endif;?>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="pwd">Username:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="userName" placeholder="Enter username">
+                    <input type="text" class="form-control" id="userName" name="userName"
+                           value="<?= getValue($data, 'userName')?>" placeholder="Enter username">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="email">Email:</label>
                 <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email" placeholder="Enter email">
+                    <input type="email" class="form-control" id="email" name="email"
+                           value="<?= getValue($data, 'email')?>" placeholder="Enter email">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="pwd">Password:</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Enter password">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="pwdRep">Repeat password:</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="pwdRep" placeholder="Repeat password">
+                    <input type="password" class="form-control" id="pwdRep" name="pwdRep" placeholder="Repeat password">
                 </div>
             </div>
             <div class="form-group">

@@ -9,7 +9,7 @@
 class DbStorage
 {
     const DB_HOST = 'localhost';
-    const DB_NAME = 'Cram';
+    const DB_NAME = 'Cram2';
     const DB_USER = 'root';
     const DB_PASS = 'root';
 
@@ -34,7 +34,7 @@ class DbStorage
 
     public static function query($sql, $params = null)
     {
-        var_dump($sql, $params);
+        //var_dump($sql, $params);
         $statement = self::getConnection()->prepare($sql);
 
         $statement->execute($params);
@@ -63,6 +63,43 @@ class DbStorage
         if ($data) {
             $object->setFieldsFromDb($data[0]);
         }
+    }
+
+    public static function selectCards()
+    {
+        $sql = sprintf('SELECT * FROM %s WHERE %s = ?', 'flash_cards', 'user_id');
+        $data = self::query($sql, [$_SESSION['id']]);
+        return $data;
+    }
+
+    public static function checkUsername(IDBStorable $object)
+    {
+        $sql = sprintf('SELECT * FROM %s WHERE %s = ?', $object->getTableName(), $object->getUsernameName());
+        $data = self::query($sql, [$object->getUsernameValue()]);
+        return $data;
+    }
+
+    public static function checkEmail(IDBStorable $object)
+    {
+        $sql = sprintf('SELECT * FROM %s WHERE %s = ?', $object->getTableName(), $object->getEmailName());
+        $data = self::query($sql, [$object->getEmailValue()]);
+        return $data;
+    }
+
+
+
+    public static function showCards()
+    {
+        $sql = sprintf('SELECT * FROM %s WHERE %s = ?', 'questions', 'flash_cards_id');
+        $data = self::query($sql, [$_GET['id']]);
+        return $data;
+    }
+
+    public static function checkID(IDBStorable $object)
+    {
+        $sql = sprintf('SELECT * FROM %s WHERE %s = ?', $object->getTableName(), 'user_id');
+        $data = self::query($sql, [$_SESSION['id']]);
+        return $data[count($data) - 1]['id'];
     }
 
     public static function insertObject(IDBStorable $object)
@@ -111,11 +148,15 @@ class DbStorage
         return self::query($sql, [$object->getPrimaryKeyValue()]);
     }
 
+    public static function deleteFlashcards()
+    {
+        $sql = sprintf('DELETE FROM %s WHERE %s = ?', 'flash_cards', 'id');
+        return self::query($sql, [$_GET['id']]);
+    }
 
-
-
-
-
-
-
+    public static function deleteQuestions()
+    {
+        $sql = sprintf('DELETE FROM %s WHERE %s = ?', 'questions', 'flash_cards_id');
+        return self::query($sql, [$_GET['id']]);
+    }
 }

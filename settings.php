@@ -1,3 +1,12 @@
+<?php
+require_once 'php/autoload.php';
+require_once 'php/functions.php';
+session_start();
+if (!$_SESSION['username']) {
+    header('Location: login.php');
+    die;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,17 +37,22 @@
                     </div>
                 </form>
             </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false">$username <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="profile.php">Profile</a></li>
-                    <li><a href="settings.php">Settings</a></li>
-                    <li><a href="createFlashcard.php">Create Flashcards</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Log Out</a></li>
-                </ul>
-            </li>
+            <?php if ($_SESSION['username']): ?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><?= $_SESSION['username']?> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="profile.php">Profile</a></li>
+                        <li><a href="settings.php">Settings</a></li>
+                        <li><a href="createFlashcard.php">Create Flashcards</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="logout.php">Log Out</a></li>
+                    </ul>
+                </li>
+            <?php else: ?>
+                <li><a href="signUp.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <?php endif; ?>
         </ul>
 
     </div>
@@ -46,7 +60,7 @@
 
 <main class="container-fluid panel">
     <div class="page-header text-center">
-        <h3>Welcome $username</h3>
+        <h3>Welcome <?= $_SESSION['username']?></h3>
     </div>
     <div class="panel-body">
         <div class="panel">

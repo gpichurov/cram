@@ -20,7 +20,7 @@ class Users implements IDBStorable
      * @param $password
      * @param $email
      */
-    public function __construct($username, $password, $email)
+    public function __construct($username, $password, $email = null)
     {
         $this->username = $username;
         $this->password = $password;
@@ -40,6 +40,36 @@ class Users implements IDBStorable
             'newsletter' => $this->newsletter,
             'notification' => $this->notification
         ];
+    }
+
+    public function getUsernameName()
+    {
+        return 'username';
+    }
+
+    public function getUsernameValue()
+    {
+        return $this->username;
+    }
+
+    public function getPasswordName()
+    {
+        return 'password';
+    }
+
+    public function getPasswordValue()
+    {
+        return $this->password;
+    }
+
+    public function getEmailName()
+    {
+        return 'email';
+    }
+
+    public function getEmailValue()
+    {
+        return $this->email;
     }
 
     public function getPrimaryKeyName()
@@ -70,5 +100,15 @@ class Users implements IDBStorable
     public function setPrimaryKeyValue($value)
     {
         $this->id = $value;
+    }
+
+    public function checkLogin()
+    {
+        $sqlUsername = sprintf('SELECT * FROM %s WHERE %s = ?', $this->getTableName(), $this->getUsernameName());
+        $dataUsername = DbStorage::query($sqlUsername, [$this->getUsernameValue()]);
+        if ((!empty($dataUsername)) && ($dataUsername[0]['password'] == $this->getPasswordValue())) {
+            return $dataUsername;
+        }
+        return false;
     }
 }
